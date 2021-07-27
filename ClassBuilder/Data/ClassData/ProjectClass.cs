@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ClassBuilder.Project.ClassData {
+namespace ClassBuilder.Data.ClassData {
 	public class ProjectClass {
+		public ProjectClass BaseClass;
 		public string Name;
 		public List<ClassField> Fields;
 		public ProjectClass(string name) {

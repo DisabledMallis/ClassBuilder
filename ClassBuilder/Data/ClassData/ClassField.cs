@@ -1,4 +1,4 @@
-namespace ClassBuilder.Project.ClassData {
+namespace ClassBuilder.Data.ClassData {
 	public class ClassField {
 		string name;
 		long offset;

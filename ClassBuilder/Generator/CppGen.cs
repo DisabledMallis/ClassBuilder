@@ -1,4 +1,4 @@
-using ClassBuilder.Project.ClassData;
+using ClassBuilder.Data.ClassData;
 
 namespace ClassBuilder.Generator {
 	/// <summary>
