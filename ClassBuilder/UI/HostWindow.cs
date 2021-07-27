@@ -8,10 +8,13 @@ using ClassBuilder.Data.ClassData;
 
 namespace ClassBuilder.UI
 {
-	public class HostWindow : Form {
+	public partial class HostWindow : Form {
 		string projectLocation = "";
 		Project currentProject;
+		Panel contentPanel = new Panel();
 		public static HostWindow instance = new HostWindow();
+		int nextX = 0;
+		int nextY = 0;
 
 		private HostWindow() : base() {
 			this.Text = "ClassBuilder";
@@ -26,11 +29,9 @@ namespace ClassBuilder.UI
 		private void OpenProject(Project proj) {
 			this.currentProject = proj;
 
-			Panel contentPanel = new Panel();
 			contentPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-			int menuHeight = this.MainMenuStrip.Height;
-			contentPanel.Location = new Point(0, menuHeight);
-			contentPanel.Size = new Size(contentPanel.Width, this.Height-menuHeight);
+			contentPanel.Location = new Point(0, nextY);
+			contentPanel.Size = new Size(contentPanel.Width, this.Height-nextY);
 			contentPanel.Controls.Add(CreateClassList());
 
 			this.Controls.Add(contentPanel);
@@ -42,6 +43,7 @@ namespace ClassBuilder.UI
 			menu.Items.AddRange(new ToolStripMenuItem[] {
 				file
 			});
+			nextY += menu.Height;
 			return menu;
 		}
 
@@ -112,9 +114,15 @@ namespace ClassBuilder.UI
 				string oldName = e.Node.Text;
 				currentProject.GetClass(oldName).Name = e.Label;
 			};
+			classTree.NodeMouseDoubleClick += (object sender, TreeNodeMouseClickEventArgs e)=>{
+				string name = e.Node.Text;
+				OpenClassEditor(name);
+			};
 
 			classTree.Dock = DockStyle.Left;
 			classTree.ContextMenu = classViewCtx;
+
+			this.nextX += classTree.Width;
 
 			return classTree;
 		}
