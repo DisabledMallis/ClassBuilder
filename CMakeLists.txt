@@ -21,6 +21,7 @@ set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES
 	"System.Data"
 	"System.Drawing"
 	"System.Windows.Forms"
+	"${CMAKE_CURRENT_LIST_DIR}/Lib/Newtonsoft.Json.dll"
 )
 
 # Add sources
