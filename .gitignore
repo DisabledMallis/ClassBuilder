@@ -1,0 +1,13 @@
+CMakeFiles/
+CMakeCache.txt
+*.vcxproj
+*.vcxproj.filters
+*.log
+*.cmake
+*.csproj
+*.sln
+
+Debug/
+x64/
+obj/
+out/
