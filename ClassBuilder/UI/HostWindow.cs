@@ -9,7 +9,6 @@ using ClassBuilder.Data.ClassData;
 namespace ClassBuilder.UI
 {
 	public partial class HostWindow : Form {
-		string projectLocation = "";
 		Project currentProject;
 		Panel contentPanel = new Panel();
 		public static HostWindow instance = new HostWindow();
@@ -116,7 +115,6 @@ namespace ClassBuilder.UI
 			};
 			classTree.NodeMouseDoubleClick += (object sender, TreeNodeMouseClickEventArgs e)=>{
 				string name = e.Node.Text;
-				OpenClassEditor(name);
 			};
 
 			classTree.Dock = DockStyle.Left;

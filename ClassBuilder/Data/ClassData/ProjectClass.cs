@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace ClassBuilder.Data.ClassData {
 	public class ProjectClass {
 		public ProjectClass BaseClass;
+		public List<ProjectClass> AbstractedClasses;
 		public string Name;
 		public List<ClassField> Fields;
 		public ProjectClass(string name) {

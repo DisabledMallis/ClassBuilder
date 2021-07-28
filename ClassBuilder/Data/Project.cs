@@ -6,17 +6,17 @@ using ClassBuilder.Data.ClassData;
 
 namespace ClassBuilder.Data {
 	public class Project {
-		public List<ProjectClass> classes;
+		public List<ProjectClass> Classes;
 		public Project() {
-			classes = new List<ProjectClass>();
+			Classes = new List<ProjectClass>();
 		}
 
 		public void AddClass(ProjectClass toAdd) {
-			classes.Add(toAdd);
+			Classes.Add(toAdd);
 		}
 
 		public ProjectClass GetClass(string name) {
-			foreach(ProjectClass cls in classes) {
+			foreach(ProjectClass cls in Classes) {
 				if(cls.Name == name) {
 					return cls;
 				}
@@ -26,7 +26,7 @@ namespace ClassBuilder.Data {
 
 		public bool DeleteClass(string name) {
 			ProjectClass toDel = null;
-			foreach(ProjectClass cls in classes) {
+			foreach(ProjectClass cls in Classes) {
 				if(cls.Name == name) {
 					toDel = cls;
 					break;
@@ -35,7 +35,7 @@ namespace ClassBuilder.Data {
 			if(toDel == null) {
 				return false;
 			}
-			classes.Remove(toDel);
+			Classes.Remove(toDel);
 			return true;
 		}
 	}
