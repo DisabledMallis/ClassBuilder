@@ -1,0 +1,20 @@
+{
+  "Classes": [
+    {
+      "Abstractions": [
+        {
+          "Abstractions": [],
+          "Name": "Mob",
+          "Fields": []
+        }
+      ],
+      "Name": "Actor",
+      "Fields": []
+    },
+    {
+      "Abstractions": [],
+      "Name": "Mob",
+      "Fields": []
+    }
+  ]
+}

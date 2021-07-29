@@ -15,7 +15,6 @@ namespace ClassBuilder.CLI.Commands
 				Console.WriteLine("Missing type to create:");
 				Console.WriteLine("- project");
 				Console.WriteLine("- class");
-				Console.WriteLine("- field");
 				return false;
 			}
 			if(args[0] == "project") {
@@ -29,12 +28,13 @@ namespace ClassBuilder.CLI.Commands
 					return false;
 				}
 				ProjectClass newClass = new ProjectClass("Unnamed");
-				Console.Write("Created new class");
-				if(args.Length == 2) {
-					string className = args[1];
-					newClass.Name = className;
-					Console.Write(" with name "+className);
+				if(args.Length != 2) {
+					Console.WriteLine("No class name provided!");
+					return false;
 				}
+				string className = args[1];
+				newClass.Name = className;
+				Console.Write("Created new class with name "+className);
 				Console.WriteLine();
 				ProjectLoader.CurrentProject.AddClass(newClass);
 				return true;

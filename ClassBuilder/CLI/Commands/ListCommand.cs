@@ -32,8 +32,8 @@ namespace ClassBuilder.CLI.Commands
 			}
 			Console.WriteLine(current.Name);
 
-			if(current.AbstractedClasses != null) {
-				List<ProjectClass> abstracted = current.AbstractedClasses;
+			if(current.GetAbstractions().Count != 0) {
+				List<ProjectClass> abstracted = current.GetAbstractions();
 				foreach(ProjectClass cls in abstracted) {
 					PrintClasses(cls, level+1);
 				}

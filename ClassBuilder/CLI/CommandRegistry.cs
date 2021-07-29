@@ -11,6 +11,7 @@ namespace ClassBuilder.CLI {
 		public CommandRegistry() {
 			commands = new List<AbstractCommand>();
 			
+			commands.Add(new ClassCommand());
 			commands.Add(new ListCommand());
 			commands.Add(new NewCommand());
 			commands.Add(new OpenCommand());
