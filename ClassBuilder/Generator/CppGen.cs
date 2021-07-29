@@ -5,11 +5,16 @@ using ClassBuilder.ClassData;
 
 namespace ClassBuilder.Generator {
 	public class CppGen : AbstractGenerator {
-		long currentPad = 0;
+		Dictionary<string, long> classSizes = new Dictionary<string, long>();
+		string currentClass = "";
+		bool extends = false;
+		string currentExtension = "";
 		public override string GenClass(NativeClass cls, List<NativeClass> classSet) {
 			string ret = "";
-			if(cls.Extends == null) {
-				currentPad = 0; // Its a new class, so we want to reset the padding
+			currentClass = cls.ClassName;
+			classSizes[cls.ClassName] = 0; // New class padding
+			if(cls.Extends != null) { //If it extends, we have to add that size
+				classSizes[cls.ClassName] += classSizes[cls.Extends];
 			}
 			ret += "struct " + cls.ClassName + (cls.Extends == null ? "" : " : public " + cls.Extends) + " {\n";
 			foreach(Field f in cls.Fields) {
@@ -21,8 +26,8 @@ namespace ClassBuilder.Generator {
 		public override string GenField(Field field) {
 			string ret = "";
 			int parsedOffset = Convert.ToInt32(field.Offset, 16);
-			ret += "\tchar padding_"+parsedOffset+"["+(parsedOffset-currentPad)+"]\n";
-			currentPad = parsedOffset+field.Type.TypeSize;
+			ret += "\tchar padding_"+parsedOffset+"["+(parsedOffset-classSizes[currentClass])+"];\n";
+			classSizes[currentClass] = (extends ? classSizes[currentExtension] : 0) + parsedOffset+field.Type.TypeSize;
 			ret += "\t"+field.Type.TypeName+" "+field.Name+";";
 			return ret;
 		}

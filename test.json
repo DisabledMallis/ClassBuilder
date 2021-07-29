@@ -21,6 +21,20 @@
 			  }
         ]
     },
+	{
+		"ClassName": "Problem",
+		"Extends": null,
+		"Fields": [
+			{
+				"Name": "Poo",
+				"Offset": "C",
+				"Type": {
+					"TypeName": "Funk*",
+					"TypeSize": 4
+				}
+			}
+		]
+	},
     {
         "ClassName": "Mob",
         "Extends": "Actor",
