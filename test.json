@@ -1,0 +1,38 @@
+[
+    {
+        "ClassName": "Actor",
+        "Extends": null,
+        "Fields": [
+              {
+                    "Name": "OnGround",
+                    "Offset": "1E0",
+                    "Type": {
+                        "TypeName": "bool",
+                        "TypeSize": 1
+                    }
+              },
+			  {
+				  "Name": "WorldSource",
+				  "Offset": "368",
+				  "Type":{
+					  "TypeName": "BlockSource*",
+					  "TypeSize": 8
+				  }
+			  }
+        ]
+    },
+    {
+        "ClassName": "Mob",
+        "Extends": "Actor",
+        "Fields": [
+              {
+                    "Name": "YHeadRot",
+                    "Offset": "728",
+                    "Type": {
+                        "TypeName": "float",
+                        "TypeSize": 4
+                    }
+              }
+        ]
+    }
+]
