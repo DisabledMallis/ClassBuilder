@@ -1,24 +1,74 @@
 [
+	{
+		"ClassName": "ClientInstance",
+		"Extends": null,
+		"Fields":[
+			{
+				"Name": "clientPlayer",
+				"Offset": "140",
+				"Type": {
+					"TypeName": "LocalPlayer*",
+					"TypeSize": 8
+				}
+			}
+		],
+		"Functions": [],
+		"Virtuals": []
+	},
     {
         "ClassName": "Actor",
         "Extends": null,
         "Fields": [
-              {
-                    "Name": "OnGround",
-                    "Offset": "1E0",
-                    "Type": {
-                        "TypeName": "bool",
-                        "TypeSize": 1
+			{
+				"Name": "LookingVec",
+				"Offset": "140",
+				"Type": {
+					"TypeName": "Vector2<float>",
+					"TypeSize": 8
+				}
+			},
+			{
+				"Name": "OnGround",
+				"Offset": "1E0",
+				"Type": {
+					"TypeName": "bool",
+					"TypeSize": 1
+				}
+			},
+			{
+				"Name": "WorldSource",
+				"Offset": "368",
+				"Type":{
+					"TypeName": "BlockSource*",
+					"TypeSize": 8
+				}
+			}
+        ],
+		"Functions": [
+            {
+                "Name": "setRot",
+                "Signature": "?? 89 ?? ?? ?? 57 48 83 ?? ?? 8B ?? ?? 48 8B ?? 48 81",
+                "Parameters": [
+					{
+						"Name": "this",
+						"Type": "Actor"
+					},
+                    {
+                        "Name": "rotation",
+                        "Type": "Vector2<float>"
                     }
-              },
-			  {
-				  "Name": "WorldSource",
-				  "Offset": "368",
-				  "Type":{
-					  "TypeName": "BlockSource*",
-					  "TypeSize": 8
-				  }
-			  }
+                ],
+                "Type": "void",
+                "Convention": "__thiscall"
+            }
+        ],
+        "Virtuals": [
+            {
+                "Name": "getPos",
+                "Offset": 15,
+                "Parameters": [],
+                "Type": "Vector3<float>"
+            }
         ]
     },
 	{
@@ -33,7 +83,9 @@
 					"TypeSize": 4
 				}
 			}
-		]
+		],
+		"Functions": [],
+		"Virtuals": []
 	},
     {
         "ClassName": "Mob",
@@ -47,6 +99,9 @@
                         "TypeSize": 4
                     }
               }
-        ]
+        ],
+		"Functions": [],
+		"Virtuals": [
+		]
     }
 ]

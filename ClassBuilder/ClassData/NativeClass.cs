@@ -25,6 +25,12 @@ namespace ClassBuilder.ClassData
 
         [JsonProperty("Fields", Required = Required.Always)]
         public List<Field> Fields { get; set; }
+
+        [JsonProperty("Functions", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public List<Function> Functions { get; set; }
+
+        [JsonProperty("Virtuals", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public List<Virtual> Virtuals { get; set; }
     }
 
     public partial class Field
@@ -46,6 +52,48 @@ namespace ClassBuilder.ClassData
 
         [JsonProperty("TypeSize", Required = Required.Always)]
         public long TypeSize { get; set; }
+    }
+
+    public partial class Function
+    {
+        [JsonProperty("Name", Required = Required.Always)]
+        public string Name { get; set; }
+
+        [JsonProperty("Signature", Required = Required.Always)]
+        public string Signature { get; set; }
+
+        [JsonProperty("Parameters", Required = Required.Always)]
+        public List<Parameter> Parameters { get; set; }
+
+        [JsonProperty("Type", Required = Required.Always)]
+        public string Type { get; set; }
+
+        [JsonProperty("Convention", Required = Required.Always)]
+        public string Convention { get; set; }
+    }
+
+    public partial class Parameter
+    {
+        [JsonProperty("Name", Required = Required.Always)]
+        public string Name { get; set; }
+
+        [JsonProperty("Type", Required = Required.Always)]
+        public string Type { get; set; }
+    }
+
+    public partial class Virtual
+    {
+        [JsonProperty("Name", Required = Required.Always)]
+        public string Name { get; set; }
+
+        [JsonProperty("Offset", Required = Required.Always)]
+        public long Offset { get; set; }
+
+        [JsonProperty("Parameters", Required = Required.Always)]
+        public List<Parameter> Parameters { get; set; }
+
+        [JsonProperty("Type", Required = Required.Always)]
+        public string Type { get; set; }
     }
 
     public partial class NativeClass
