@@ -1,5 +1,21 @@
 [
 	{
+		"ClassName": "#INCLUDES",
+		"Extends": null,
+		"Fields": [
+			{
+				"Name": "Math.h",
+				"Offset": 0,
+				"Type": {
+					"TypeName": "",
+					"TypeSize": 0
+				}
+			}
+		],
+		"Functions":[],
+		"Virtuals":[]
+	},
+	{
 		"ClassName": "ClientInstance",
 		"Extends": null,
 		"Fields":[
@@ -7,7 +23,7 @@
 				"Name": "clientPlayer",
 				"Offset": "140",
 				"Type": {
-					"TypeName": "LocalPlayer*",
+					"TypeName": "class LocalPlayer*",
 					"TypeSize": 8
 				}
 			}
@@ -39,7 +55,7 @@
 				"Name": "WorldSource",
 				"Offset": "368",
 				"Type":{
-					"TypeName": "BlockSource*",
+					"TypeName": "class BlockSource*",
 					"TypeSize": 8
 				}
 			}
@@ -71,22 +87,6 @@
             }
         ]
     },
-	{
-		"ClassName": "Problem",
-		"Extends": null,
-		"Fields": [
-			{
-				"Name": "Poo",
-				"Offset": "C",
-				"Type": {
-					"TypeName": "Funk*",
-					"TypeSize": 4
-				}
-			}
-		],
-		"Functions": [],
-		"Virtuals": []
-	},
     {
         "ClassName": "Mob",
         "Extends": "Actor",

@@ -12,6 +12,23 @@ namespace ClassBuilder.Generator {
 		string currentExtension = "";
 		public override string GenClass(NativeClass cls, List<NativeClass> classSet) {
 			string ret = "";
+
+			if(cls.ClassName == "#INCLUDES") {
+				return null;
+			}
+
+			//Header guarding
+			ret += "#ifndef GUARD_"+cls.ClassName+"\n";
+			ret += "#define GUARD_"+cls.ClassName+"\n";
+
+			foreach(NativeClass incCls in classSet) {
+				if(incCls.ClassName == "#INCLUDES") {
+					foreach(Field f in incCls.Fields) {
+						ret += "#include \""+f.Name+"\"\n";
+					}
+				}
+			}
+
 			currentClass = cls.ClassName;
 			classSizes[cls.ClassName] = 0; // New class padding
 			lastVirt[cls.ClassName] = 0; // New class virt padding
@@ -32,7 +49,8 @@ namespace ClassBuilder.Generator {
 			foreach(Function func in cls.Functions) {
 				ret += GenFunc(func)+"\n";
 			}
-			ret += "};";
+			ret += "};\n";
+			ret += "#endif";
 			return ret;
 		}
 		public override string GenField(Field field) {
