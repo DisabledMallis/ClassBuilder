@@ -55,7 +55,7 @@
 					},
                     {
                         "Name": "rotation",
-                        "Type": "Vector2<float>"
+                        "Type": "Vector2<float>*"
                     }
                 ],
                 "Type": "void",
@@ -67,7 +67,7 @@
                 "Name": "getPos",
                 "Offset": 15,
                 "Parameters": [],
-                "Type": "Vector3<float>"
+                "Type": "Vector3<float>*"
             }
         ]
     },
