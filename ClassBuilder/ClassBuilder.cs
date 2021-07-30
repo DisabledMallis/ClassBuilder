@@ -79,6 +79,7 @@ namespace ClassBuilder {
 					Console.WriteLine(source);
 				} else {
 					File.WriteAllText(outPath+"/"+cls.ClassName+".h",source);
+					Console.WriteLine("Generated class "+cls.ClassName+".h");
 				}
 			}
 		}
