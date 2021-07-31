@@ -29,6 +29,10 @@ namespace ClassBuilder.Generator {
 				}
 			}
 
+			if(cls.Extends != null) {
+				ret += "#include \"" + cls.Extends + ".h\"\n";
+			}
+
 			currentClass = cls.ClassName;
 			classSizes[cls.ClassName] = 0; // New class padding
 			lastVirt[cls.ClassName] = 0; // New class virt padding
