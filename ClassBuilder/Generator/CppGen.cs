@@ -100,7 +100,6 @@ namespace ClassBuilder.Generator {
 			ret += "\t\t\tUtils::DebugF(\"FATAL: Sig failure for "+funcName+"\");\n";
 			ret += "\t\t}\n";
 			ret += "\t\tholder_"+funcName+" += -"+pushed+";\n";
-
 			ret += "\t\treturn (("+function.Type+"("+function.Convention+"*)("+ (thisParam != null ? thisParam.Type+"*"+( parms != "" ? ", " : "") : "") + parms + "))holder_"+funcName+")(" + (thisParam != null ? "this"+( parms != "" ? ", " : "") : "")+callParms+");\n";
 			ret += "\t};";
 			return ret;
