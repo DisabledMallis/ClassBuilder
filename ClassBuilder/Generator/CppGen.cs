@@ -60,7 +60,10 @@ namespace ClassBuilder.Generator {
 		public override string GenField(Field field) {
 			string ret = "";
 			int parsedOffset = Convert.ToInt32(field.Offset, 16);
-			ret += "\tchar padding_"+parsedOffset+"["+(parsedOffset-classSizes[currentClass])+"];\n";
+			long paddingSize = (parsedOffset-classSizes[currentClass]);
+			if(paddingSize != 0) {
+				ret += "\tchar padding_"+parsedOffset+"["+paddingSize+"];\n";
+			}
 			classSizes[currentClass] = (extends ? classSizes[currentExtension] : 0) + parsedOffset+field.Type.TypeSize;
 			ret += "\t"+field.Type.TypeName+" "+field.Name+";";
 			return ret;
