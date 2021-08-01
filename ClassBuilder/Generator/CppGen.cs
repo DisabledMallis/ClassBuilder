@@ -95,7 +95,7 @@ namespace ClassBuilder.Generator {
 				parms = parms.Substring(0, parms.Length-2);
 			if(callParms != "")
 				callParms = callParms.Substring(0, callParms.Length-2);
-			ret += "\tauto " + function.Convention + " " + function.Name + "(" + parms + ") -> " + function.Type + " {\n";
+			ret += "\t" + (function.Static ? "static " : "") + "auto " + function.Convention + " " + function.Name + "(" + parms + ") -> " + function.Type + " {\n";
 			ret += "\t\tif(holder_"+funcName+" == 0) {\n";
 			ret += "\t\t\tholder_"+funcName+" = Mem::FindSig(\""+signature+"\");\n";
 			ret += "\t\t}\n";

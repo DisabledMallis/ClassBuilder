@@ -17,82 +17,86 @@ namespace ClassBuilder.ClassData
 
     public partial class NativeClass
     {
-        [JsonProperty("ClassName", Required = Required.Always)]
+        [JsonProperty("ClassName")]
         public string ClassName { get; set; }
 
-        [JsonProperty("Extends", Required = Required.AllowNull)]
+        [JsonProperty("Extends")]
         public string Extends { get; set; }
 
-        [JsonProperty("Fields", Required = Required.Always)]
+        [JsonProperty("Fields")]
         public List<Field> Fields { get; set; }
 
-        [JsonProperty("Functions", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Functions")]
         public List<Function> Functions { get; set; }
 
-        [JsonProperty("Virtuals", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Virtuals")]
         public List<Virtual> Virtuals { get; set; }
     }
 
     public partial class Field
     {
-        [JsonProperty("Name", Required = Required.Always)]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("Offset", Required = Required.Always)]
+        [JsonProperty("Offset")]
         public string Offset { get; set; }
 
-        [JsonProperty("Type", Required = Required.Always)]
+        [JsonProperty("Type")]
         public TypeClass Type { get; set; }
     }
 
     public partial class TypeClass
     {
-        [JsonProperty("TypeName", Required = Required.Always)]
+        [JsonProperty("TypeName")]
         public string TypeName { get; set; }
 
-        [JsonProperty("TypeSize", Required = Required.Always)]
+        [JsonProperty("TypeSize")]
+        [JsonConverter(typeof(DecodingChoiceConverter))]
         public long TypeSize { get; set; }
     }
 
     public partial class Function
     {
-        [JsonProperty("Name", Required = Required.Always)]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("Signature", Required = Required.Always)]
+        [JsonProperty("Signature")]
         public string Signature { get; set; }
 
-        [JsonProperty("Parameters", Required = Required.Always)]
+        [JsonProperty("Parameters")]
         public List<Parameter> Parameters { get; set; }
 
-        [JsonProperty("Type", Required = Required.Always)]
+        [JsonProperty("Type")]
         public string Type { get; set; }
 
-        [JsonProperty("Convention", Required = Required.Always)]
+        [JsonProperty("Convention")]
         public string Convention { get; set; }
+
+        [JsonProperty("Static", NullValueHandling = NullValueHandling.Ignore)]
+        public bool Static { get; set; }
     }
 
     public partial class Parameter
     {
-        [JsonProperty("Name", Required = Required.Always)]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("Type", Required = Required.Always)]
+        [JsonProperty("Type")]
         public string Type { get; set; }
     }
 
     public partial class Virtual
     {
-        [JsonProperty("Name", Required = Required.Always)]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("Offset", Required = Required.Always)]
+        [JsonProperty("Offset")]
         public long Offset { get; set; }
 
-        [JsonProperty("Parameters", Required = Required.Always)]
-        public List<Parameter> Parameters { get; set; }
+        [JsonProperty("Parameters")]
+        public List<object> Parameters { get; set; }
 
-        [JsonProperty("Type", Required = Required.Always)]
+        [JsonProperty("Type")]
         public string Type { get; set; }
     }
 
@@ -117,5 +121,45 @@ namespace ClassBuilder.ClassData
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };
+    }
+
+    internal class DecodingChoiceConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.Null) return null;
+            switch (reader.TokenType)
+            {
+                case JsonToken.Integer:
+                    var integerValue = serializer.Deserialize<long>(reader);
+                    return integerValue;
+                case JsonToken.String:
+                case JsonToken.Date:
+                    var stringValue = serializer.Deserialize<string>(reader);
+                    long l;
+                    if (Int64.TryParse(stringValue, out l))
+                    {
+                        return l;
+                    }
+                    break;
+            }
+            throw new Exception("Cannot unmarshal type long");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            if (untypedValue == null)
+            {
+                serializer.Serialize(writer, null);
+                return;
+            }
+            var value = (long)untypedValue;
+            serializer.Serialize(writer, value);
+            return;
+        }
+
+        public static readonly DecodingChoiceConverter Singleton = new DecodingChoiceConverter();
     }
 }
