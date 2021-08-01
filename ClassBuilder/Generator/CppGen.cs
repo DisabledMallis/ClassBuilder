@@ -88,8 +88,10 @@ namespace ClassBuilder.Generator {
 				parms += (param.Type + " " + param.Name + ", ");
 				callParms += param.Name + ", ";
 			}
-			parms = parms.Substring(0, parms.Length-2);
-			callParms = callParms.Substring(0, callParms.Length-2);
+			if(parms != "")
+				parms = parms.Substring(0, parms.Length-2);
+			if(callParms != "")
+				callParms = callParms.Substring(0, callParms.Length-2);
 			ret += "\tauto " + function.Convention + " " + function.Name + "(" + parms + ") -> " + function.Type + " {\n";
 			ret += "\t\tif(holder_"+funcName+" == 0) {\n";
 			ret += "\t\t\tholder_"+funcName+" = Mem::FindSig(\""+signature+"\");\n";
@@ -98,7 +100,8 @@ namespace ClassBuilder.Generator {
 			ret += "\t\t\tUtils::DebugF(\"FATAL: Sig failure for "+funcName+"\");\n";
 			ret += "\t\t}\n";
 			ret += "\t\tholder_"+funcName+" += -"+pushed+";\n";
-			ret += "\t\t(("+function.Type+"("+function.Convention+"*)("+ (thisParam != null ? thisParam.Type+"*, " : "") + parms + "))holder_"+funcName+")(" + (thisParam != null ? "this, " : "")+callParms+");\n";
+
+			ret += "\t\treturn (("+function.Type+"("+function.Convention+"*)("+ (thisParam != null ? thisParam.Type+"*"+( parms != "" ? ", " : "") : "") + parms + "))holder_"+funcName+")(" + (thisParam != null ? "this"+( parms != "" ? ", " : "") : "")+callParms+");\n";
 			ret += "\t};";
 			return ret;
 		}
