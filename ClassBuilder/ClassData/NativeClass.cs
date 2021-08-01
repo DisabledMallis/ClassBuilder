@@ -94,7 +94,7 @@ namespace ClassBuilder.ClassData
         public long Offset { get; set; }
 
         [JsonProperty("Parameters")]
-        public List<object> Parameters { get; set; }
+        public List<Parameter> Parameters { get; set; }
 
         [JsonProperty("Type")]
         public string Type { get; set; }
