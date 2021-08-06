@@ -9,6 +9,8 @@ namespace ClassBuilder.Generator {
 		Dictionary<string, long> classSizes = new Dictionary<string, long>();
 		string currentClass = "";
 		bool extends = false;
+		bool hasVTPtr = false;
+		bool firstField = false;
 		string currentExtension = "";
 		public override string GenClass(NativeClass cls, List<NativeClass> classSet) {
 			string ret = "";
@@ -33,6 +35,8 @@ namespace ClassBuilder.Generator {
 				ret += "#include \"" + cls.Extends + ".h\"\n";
 			}
 
+			hasVTPtr = cls.Virtuals.Count != 0;
+
 			currentClass = cls.ClassName;
 			classSizes[cls.ClassName] = 0; // New class padding
 			lastVirt[cls.ClassName] = 0; // New class virt padding
@@ -42,8 +46,10 @@ namespace ClassBuilder.Generator {
 			}
 			ret += "struct " + cls.ClassName + (cls.Extends == null ? "" : " : public " + cls.Extends) + " {\n";
 			ret += "\t/* Fields */\n";
+			firstField = true;
 			foreach(Field f in cls.Fields) {
 				ret += GenField(f)+"\n";
+				firstField = false;
 			}
 			ret += "\t/* Virtuals */\n";
 			foreach(Virtual virt in cls.Virtuals) {
@@ -60,8 +66,8 @@ namespace ClassBuilder.Generator {
 		public override string GenField(Field field) {
 			string ret = "";
 			int parsedOffset = Convert.ToInt32(field.Offset, 16);
-			long paddingSize = (parsedOffset-classSizes[currentClass]);
-			if(paddingSize != 0) {
+			long paddingSize = (parsedOffset-classSizes[currentClass])+(hasVTPtr && firstField ? -8 : 0);
+			if(paddingSize > 0) {
 				ret += "\tchar padding_"+parsedOffset+"["+paddingSize+"];\n";
 			}
 			classSizes[currentClass] = (extends ? classSizes[currentExtension] : 0) + parsedOffset+field.Type.TypeSize;
