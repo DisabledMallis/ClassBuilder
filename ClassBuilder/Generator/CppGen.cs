@@ -111,7 +111,7 @@ namespace ClassBuilder.Generator {
 		{
 			string ret = "";
 			for(long i = lastVirt[currentClass]; i < virt.Offset; i++) {
-				ret += "\tvoid virt_pad_"+i+"() {};\n";
+				ret += "\tvirtual void virt_pad_"+i+"() {};\n";
 			}
 			lastVirt[currentClass] = (extends ? lastVirt[currentExtension] : 0) + virt.Offset + 1;
 			string callParms = "";
