@@ -120,7 +120,7 @@ namespace ClassBuilder.Generator {
 			}
 			if(callParms != "")
 				callParms = callParms.Substring(0, callParms.Length-2);
-			ret += "\tauto "+virt.Name+"("+callParms+") -> "+virt.Type+" {};";
+			ret += "\tvirtual auto "+virt.Name+"("+callParms+") -> "+virt.Type+" {};";
 			return ret;
 		}
 	}
