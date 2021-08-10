@@ -65,23 +65,45 @@ namespace ClassBuilder {
 					continue;
 				}
 			}
+
+			//Check if the json file was modified since last run
 			string json = File.ReadAllText(projPath);
-			List<NativeClass> nc = NativeClass.FromJson(json);
-			if(!Directory.Exists(outPath)) {
-				Directory.CreateDirectory(outPath);
-			}
-			foreach(NativeClass cls in nc) {
-				string source = gen.GenClass(cls, nc);
-				if(source == null) {
-					continue;
-				}
-				if(outPath == "") {
-					Console.WriteLine(source);
-				} else {
-					File.WriteAllText(outPath+"/"+cls.ClassName+".h",source);
-					Console.WriteLine("Generated class "+cls.ClassName+".h");
+			bool modified = true;
+			string hashFile = String.Format("{0:X}", projPath.GetHashCode())+".lock";
+			if(File.Exists(hashFile)) {
+				string content = File.ReadAllText(hashFile);
+				if(json.GetHashCode().ToString() == content) {
+					modified = false;
 				}
 			}
+
+			if(modified) {
+				List<NativeClass> nc = NativeClass.FromJson(json);
+				if(!Directory.Exists(outPath)) {
+					Directory.CreateDirectory(outPath);
+				}
+				foreach(NativeClass cls in nc) {
+					string source = gen.GenClass(cls, nc);
+					if(source == null) {
+						continue;
+					}
+					if(outPath == "") {
+						Console.WriteLine(source);
+					} else {
+						File.WriteAllText(outPath+"/"+cls.ClassName+".h",source);
+						Console.WriteLine("Generated class "+cls.ClassName+".h");
+					}
+				}
+			}
+			else {
+				Console.WriteLine(projPath+" was not modified since last run, so no code was generated.");
+			}
+
+			//Save a lock file so it doesnt run more than it needs to
+			if(!File.Exists(hashFile)) {
+				File.Create(hashFile);
+			}
+			File.WriteAllText(hashFile, json.GetHashCode().ToString());
 		}
 	}
 }
