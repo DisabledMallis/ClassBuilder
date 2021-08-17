@@ -11,6 +11,12 @@ using ClassBuilder.Generator;
 namespace ClassBuilder {
 	public class ClassBuilder {
 		public static void Main(string[] args) {
+			if(args.Length == 0) {
+				MessageBox.Show("ClassBuilder project editor GUI doesn't exist yet!");
+				return;
+			}
+
+
 			bool dGen = false;
 			AbstractGenerator gen = null;
 			bool dProj = false;
