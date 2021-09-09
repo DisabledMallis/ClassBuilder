@@ -35,6 +35,12 @@ namespace ClassBuilder.Generator {
 				ret += "#include \"" + cls.Extends + ".h\"\n";
 			}
 
+			if(cls.Includes != null) {
+				foreach(string include in cls.Includes) {
+				ret += "#include \"" + include + ".h\"\n";
+				}
+			}
+
 			hasVTPtr = cls.Virtuals.Count != 0;
 
 			currentClass = cls.ClassName;

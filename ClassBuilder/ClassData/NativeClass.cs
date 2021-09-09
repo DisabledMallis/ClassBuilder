@@ -23,6 +23,9 @@ namespace ClassBuilder.ClassData
         [JsonProperty("Extends")]
         public string Extends { get; set; }
 
+		[JsonProperty("Includes")]
+		public string[] Includes { get; set; }
+
         [JsonProperty("Fields")]
         public List<Field> Fields { get; set; }
 
