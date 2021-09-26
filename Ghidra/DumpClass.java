@@ -32,6 +32,24 @@ public class DumpClass extends GhidraScript {
 		selectClassUI();
     }
 
+	public void classFeatureUI(GhidraClass gClass) {
+		JFrame frame = new JFrame("ClassBuilder - " + gClass.getName());
+		frame.setSize(800,400);
+		frame.setVisible(true);
+
+		JPanel contentPanel = new JPanel();
+
+		JCheckBox fieldsBox = new JCheckBox("Fields");
+		JCheckBox vFuncsBox = new JCheckBox("VTable");
+		JCheckBox funcBox = new JCheckBox("Functions");
+
+		contentPanel.add(fieldsBox);
+		contentPanel.add(vFuncsBox);
+		contentPanel.add(funcBox);
+
+		frame.add(contentPanel);
+	}
+
 	public void selectClassUI() {
 		Program prog = this.getCurrentProgram();
 		SymbolTable table = prog.getSymbolTable();
@@ -52,6 +70,19 @@ public class DumpClass extends GhidraScript {
 
 		JScrollPane scrollPane = new JScrollPane();
 		JList<GhidraClass> classList = new JList(classVec);
+		classList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				JList list = (JList)evt.getSource();
+				if (evt.getClickCount() == 2) {
+		
+					// Double-click detected
+					int index = list.locationToIndex(evt.getPoint());
+
+					GhidraClass gClass = classVec.get(index);
+					classFeatureUI(gClass);
+				}
+			}
+		});
 		scrollPane.setViewportView(classList);
 
 		contentPanel.add(scrollPane, BorderLayout.CENTER);
