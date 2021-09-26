@@ -8,9 +8,10 @@
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
 
 import ghidra.app.script.GhidraScript;
 import ghidra.program.model.mem.*;
@@ -45,12 +46,36 @@ public class DumpClass extends GhidraScript {
 			classVec.add(e);
 		});
 
-		JScrollPane scrollPane = new JScrollPane();
+		JPanel contentPanel = new JPanel();
 
+		contentPanel.setLayout(new BorderLayout());
+
+		JScrollPane scrollPane = new JScrollPane();
 		JList<GhidraClass> classList = new JList(classVec);
 		scrollPane.setViewportView(classList);
 
-		frame.add(scrollPane);
+		contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+		JPanel searchPanel = new JPanel();
+		JLabel searchLabel = new JLabel("Search: ");
+		JTextArea searchBox = new JTextArea(1, 50);
+		searchBox.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent evt) {
+                String newText = searchBox.getText();
+				classVec.clear();
+				table.getClassNamespaces().forEachRemaining(e->{
+					if(e.getName().contains(newText)) {
+						classVec.add(e);
+					}
+				});
+				contentPanel.repaint();
+            }
+        });
+		searchPanel.add(searchLabel, BorderLayout.WEST);
+		searchPanel.add(searchBox, BorderLayout.CENTER);
+		contentPanel.add(searchPanel, BorderLayout.SOUTH);
+
+		frame.add(contentPanel);
 
 		frame.setVisible(true);
 	}
