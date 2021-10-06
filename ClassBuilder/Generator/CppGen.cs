@@ -91,7 +91,11 @@ namespace ClassBuilder.Generator {
 				signature = signature.Substring(3);
 			}
 
-			string ret = "\tstatic inline uintptr_t holder_"+funcName+";\n";
+			string ret = "\tstatic inline uintptr_t holder_"+funcName;
+			if (function.PreInit)
+				ret += " = Utils::PreInit(\""+signature+"\",-"+pushed+")";
+			ret += ";\n";
+
 			string parms = "";
 			string callParms = "";
 			Parameter thisParam = null;
@@ -108,13 +112,15 @@ namespace ClassBuilder.Generator {
 			if(callParms != "")
 				callParms = callParms.Substring(0, callParms.Length-2);
 			ret += "\t" + (function.Static ? "static " : "") + "auto " + function.Convention + " " + function.Name + "(" + parms + ") -> " + function.Type + " {\n";
-			ret += "\t\tif(holder_"+funcName+" == 0) {\n";
-			ret += "\t\t\tholder_"+funcName+" = Mem::FindSig(\""+signature+"\");\n";
-			ret += "\t\t}\n";
-			ret += "\t\tif(holder_"+funcName+" == 0){\n";
-			ret += "\t\t\tUtils::DebugF(\"FATAL: Sig failure for "+funcName+"\");\n";
-			ret += "\t\t}\n";
-			ret += "\t\tholder_"+funcName+" += -"+pushed+";\n";
+			if (!function.PreInit) {
+				ret += "\t\tif(holder_" + funcName + " == 0) {\n";
+				ret += "\t\t\tholder_" + funcName + " = Mem::FindSig(\"" + signature + "\");\n";
+				ret += "\t\t\tif(holder_" + funcName + " == 0){\n";
+				ret += "\t\t\t\tUtils::DebugF(\"FATAL: Sig failure for " + funcName + "\");\n";
+				ret += "\t\t\t}\n";
+				ret += "\t\t\tholder_" + funcName + " += -" + pushed + ";\n";
+				ret += "\t\t}\n";
+			}
 			ret += "\t\treturn (("+function.Type+"("+function.Convention+"*)("+ (thisParam != null ? thisParam.Type+"*"+( parms != "" ? ", " : "") : "") + parms + "))holder_"+funcName+")(" + (thisParam != null ? "this"+( parms != "" ? ", " : "") : "")+callParms+");\n";
 			ret += "\t};";
 			return ret;
