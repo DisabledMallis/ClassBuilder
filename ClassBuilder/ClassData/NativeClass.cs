@@ -77,6 +77,9 @@ namespace ClassBuilder.ClassData
 
         [JsonProperty("Static", NullValueHandling = NullValueHandling.Ignore)]
         public bool Static { get; set; }
+
+        [JsonProperty("PreInit")]
+        public bool PreInit { get; set; } = false;
     }
 
     public partial class Parameter
