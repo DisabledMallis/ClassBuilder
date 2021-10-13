@@ -23,6 +23,20 @@ namespace ClassBuilder.Generator {
 			ret += "#ifndef GUARD_"+cls.ClassName+"\n";
 			ret += "#define GUARD_"+cls.ClassName+"\n";
 
+			//External functions
+			//SCANSIG function to be defined
+			ret += "#ifndef SCANSIG\n";
+			ret += "#define SCANSIG Mem::FindSig\n";
+			ret += "#endif\n";
+			//PRINTF function to be defined
+			ret += "#ifndef PRINTF\n";
+			ret += "#define PRINTF printf\n";
+			ret += "#endif\n";
+			//PREINIT function macro
+			ret += "#ifndef PREINIT\n";
+			ret += "#define PREINIT Utils::PreInit\n";
+			ret += "#endif\n";
+
 			foreach(NativeClass incCls in classSet) {
 				if(incCls.ClassName == "#INCLUDES") {
 					foreach(Field f in incCls.Fields) {
@@ -93,7 +107,7 @@ namespace ClassBuilder.Generator {
 
 			string ret = "\tstatic inline uintptr_t holder_"+funcName;
 			if (function.PreInit)
-				ret += " = Utils::PreInit(\""+signature+"\",-"+pushed+")";
+				ret += " = PREINIT(\""+signature+"\",-"+pushed+")";
 			ret += ";\n";
 
 			string parms = "";
@@ -114,9 +128,9 @@ namespace ClassBuilder.Generator {
 			ret += "\t" + (function.Static ? "static " : "") + "auto " + function.Convention + " " + function.Name + "(" + parms + ") -> " + function.Type + " {\n";
 			if (!function.PreInit) {
 				ret += "\t\tif(holder_" + funcName + " == 0) {\n";
-				ret += "\t\t\tholder_" + funcName + " = Mem::FindSig(\"" + signature + "\");\n";
+				ret += "\t\t\tholder_" + funcName + " = SCANSIG(\"" + signature + "\");\n";
 				ret += "\t\t\tif(holder_" + funcName + " == 0){\n";
-				ret += "\t\t\t\tUtils::DebugF(\"FATAL: Sig failure for " + funcName + "\");\n";
+				ret += "\t\t\t\tPRINTF(\"FATAL: Sig failure for " + funcName + "\");\n";
 				ret += "\t\t\t}\n";
 				ret += "\t\t\tholder_" + funcName + " += -" + pushed + ";\n";
 				ret += "\t\t}\n";
