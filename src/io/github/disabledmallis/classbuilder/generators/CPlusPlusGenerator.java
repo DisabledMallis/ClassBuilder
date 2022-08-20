@@ -21,7 +21,7 @@ public class CPlusPlusGenerator implements ISourceGenerator {
     public String generateStruct(IStructProvider theStruct) {
         CppSourceBuilder sourceGen = new CppSourceBuilder();
         sourceGen.keyword("struct");
-        sourceGen.name(theStruct.getName());
+        sourceGen.direct(theStruct.getName());
         sourceGen.pushScope();
         for(IFieldProvider field : theStruct.getFields()) {
             sourceGen.newline();
